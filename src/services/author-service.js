@@ -17,8 +17,19 @@ class AuthorService {
                 throw new ValidationError({
                     error: error.errors,
                 });
-                throw error;
+                
             }
+            throw error;
+        }
+    }
+
+    getAll = async () => {
+        try {
+            const authors = await this.authorRepository.getAll();
+            return authors;
+        } catch(error) {
+            Logger.error('Something went wrong in author service : create');
+            throw error; 
         }
     }
 }

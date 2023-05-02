@@ -9,6 +9,7 @@ router.post('/signup', AuthMiddlewares.validateSignUpRequest, UserController.sig
 router.post('/signin', AuthMiddlewares.validateSignInRequest,UserController.signin);
 
 router.post('/authors',AuthorMiddleware.validateCreateRequest, AuthorController.create);
+router.get('/authors', AuthorController.getAll);
 
 router.get('/home', AuthMiddlewares.isAuthenticated, (req, res) => {
     return res.json({nsg: 'ok'})

@@ -1,6 +1,6 @@
 const { BookRepository } = require('../repositories');
 const { Logger } = require('../config');
-const { ValidationError } = require('../utils/errors');
+const { ValidationError, ClientError } = require('../utils/errors');
 
 class BookService {
     constructor() {
@@ -39,6 +39,41 @@ class BookService {
             return book;
         } catch(error) {
             Logger.error('Something went wrong in books service : get');
+            throw error; 
+        }
+    }
+
+    updateRating = async (userId, bookId, rating) => {
+        try {
+            if(rating > 5 || rating < 0) {
+                throw new ClientError({
+                    message: ' invalid data sent',
+                    explanation: 'Invlid rating value'
+                });
+            }
+            const book = await this.bookRepository.get(bookId);
+            if(!book) {
+                throw new ClientError({
+                    message: ' invalid data sent',
+                    explanation: 'no book found for the given id'
+                });
+            }
+            let totalBookRatingsCount = await this.bookRepository.getTotalBookRating(bookId);
+            totalBookRatingsCount = totalBookRatingsCount.length;
+            const userBookRating = await this.bookRepository.getBookRatingByUser(bookId, userId);
+            const currentBookRating = book.rating;
+            if(userBookRating) {
+                var newRating = ((totalBookRatingsCount * currentBookRating) - userBookRating.rating + rating) / totalBookRatingsCount;
+                await this.bookRepository.updateUserRating(bookId, userId, rating);
+                await this.bookRepository.update(bookId, {rating: newRating});
+            } else {
+                var newRating = ((totalBookRatingsCount * currentBookRating) + rating) / (totalBookRatingsCount + 1);
+                await this.bookRepository.addUserRating(bookId, userId, rating);
+                await this.bookRepository.update(bookId, {rating: newRating});
+            }
+            return newRating;
+        } catch(error) {
+            console.log(error);
             throw error; 
         }
     }

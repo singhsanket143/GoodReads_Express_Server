@@ -16,7 +16,7 @@ router.post('/genres', GenreController.create);
 router.post('/books', BookController.create);
 router.get('/books', BookController.getAll);
 router.get('/books/:id', BookMiddleware.validateGetRequest, BookController.get);
-
+router.patch('/books/:id/rate/:rating', AuthMiddlewares.isAuthenticated, BookController.updateUserRating);
 
 router.get('/home', AuthMiddlewares.isAuthenticated, (req, res) => {
     return res.json({nsg: 'ok'})

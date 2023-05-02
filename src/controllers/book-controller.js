@@ -76,6 +76,27 @@ class BookController {
                     .json(internalServerErrorResponse(error));
         }
     }
+
+    updateUserRating = async (req, res) => {
+        try {
+            const response = await this.bookService.updateRating(req.user, req.params.id, Number(req.params.rating));
+            return res.status(StatusCodes.CREATED).json({
+                message: 'Successfully rated the book',
+                err: {},
+                data: response,
+                success: true
+            });
+        } catch(error) {
+            if(error.statusCode) {
+                return res
+                        .status(error.statusCode)
+                        .json(customErrorResponse(error));
+            }
+            return res
+                    .status(StatusCodes.INTERNAL_SERVER_ERROR)
+                    .json(internalServerErrorResponse(error));
+        }
+    }
 }
 
 module.exports = new BookController();

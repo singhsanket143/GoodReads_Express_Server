@@ -50,7 +50,7 @@ userSchema.methods.generateJWT = function generate() {
 }
 
 userSchema.methods.comparePassword = function compare(password) {
-    return bcrypt.compareSync(this.password, password);
+    return bcrypt.compareSync(password, this.password);
 }
 
 const User = mongoose.model('User', userSchema);

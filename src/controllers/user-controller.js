@@ -1,5 +1,6 @@
 const { StatusCodes } = require('http-status-codes');
 const { UserService } = require('../services');
+const { internalServerErrorResponse, customErrorResponse } = require('../utils/common/response-objects');
 class UserController {
     constructor() {
         this.userService = new UserService();
@@ -21,19 +22,37 @@ class UserController {
         } catch(error) {
             console.log(error);
             if(error.statusCode) {
-                return res.status(error.statusCode).json({
-                    message: 'Something went wrong',
-                    err: error,
-                    data: {},
-                    success: false
-                });
+                return res
+                        .status(error.statusCode)
+                        .json(customErrorResponse(error));
             }
-            return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-                message: 'Something went wrong',
-                err: error,
-                data: {},
-                success: false
+            return res
+                    .status(StatusCodes.INTERNAL_SERVER_ERROR)
+                    .json(internalServerErrorResponse(error));
+        }
+    }
+
+    signin = async(req, res) => {
+        try {
+            const response = await this.userService.signin({
+                email: req.body.email,
+                password: req.body.password
             });
+            return res.status(StatusCodes.OK).json({
+                data: response,
+                success: true,
+                error: {},
+                message: 'Successfully signin the user'
+            });
+        } catch(error) {
+            if(error.statusCode) {
+                return res
+                        .status(error.statusCode)
+                        .json(customErrorResponse(error));
+            }
+            return res
+                    .status(StatusCodes.INTERNAL_SERVER_ERROR)
+                    .json(internalServerErrorResponse(error));
         }
     }
 }

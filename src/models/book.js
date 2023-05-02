@@ -12,6 +12,24 @@ const bookSchema = new mongoose.Schema({
     author: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Author'
+    },
+    genred: [
+        {
+            type:  mongoose.Schema.Types.ObjectId,
+            ref: 'Genre'
+        }
+    ],
+    pages: {
+        type: Number,
+        required: true
+    },
+    pages: {
+        type: Number,
+        required: true
+    },
+    rating: {
+        type: Number,
+        required: true
     }
 }, {timestamps: true});
 

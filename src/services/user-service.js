@@ -1,15 +1,30 @@
 const { StatusCodes } = require('http-status-codes');
 
-const { UserRepository } = require('../repositories');
+const { UserRepository, BookShelfRepository } = require('../repositories');
 const { ValidationError, ClientError } = require('../utils/errors');
 class UserService {
     constructor() {
         this.userRepository = new UserRepository();
+        this.bookShelfRepository = new BookShelfRepository();
     }
 
     signup = async (data) => {
         try {
             const response = await this.userRepository.create(data);
+            await this.bookShelfRepository.bulkCreate([
+                {
+                    userId: user.id,
+                    name: 'read'
+                },
+                {
+                    userId: user.id,
+                    name: 'currently_reading'
+                },
+                {
+                    userId: user.id,
+                    name: 'want_to_read'
+                }
+            ])
             return response;
         } catch(error) {
             
@@ -40,7 +55,10 @@ class UserService {
                     statusCode: StatusCodes.BAD_REQUEST
                 });
             }
-            return user.generateJWT();
+            return {
+                token: user.generateJWT(),
+                username: user.username
+            };
         } catch(error) {
             throw error;
         }

@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const bookSchema = new mongoose.Schema({
-    name: {
+    title: {
         type: String,
         required: [true, "can't be blank"],
     },
@@ -13,7 +13,7 @@ const bookSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Author'
     },
-    genred: [
+    genres: [
         {
             type:  mongoose.Schema.Types.ObjectId,
             ref: 'Genre'
@@ -23,12 +23,12 @@ const bookSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    pages: {
-        type: Number,
-        required: true
+    publishDate: {
+        type: String,
     },
     rating: {
         type: Number,
+        default: 0,
         required: true
     }
 }, {timestamps: true});

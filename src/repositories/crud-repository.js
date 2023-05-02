@@ -1,4 +1,5 @@
 const { Logger } = require('../config/index');
+const { ClientError } = require('../utils/errors');
 class CrudRepository {
     constructor(model) {
         this.model = model;
@@ -27,6 +28,12 @@ class CrudRepository {
     get = async (id) => {
         try {
             const result = await this.model.findById(id);
+            if(!result) {
+                throw new ClientError({
+                    message: 'Invalid data sent from the client',
+                    explanation: 'No resource found for the given id'
+                });
+            }
             return result;
         } catch(error) {
             Logger.error('Something went wrong in Crud Repository : Get');

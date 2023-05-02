@@ -42,6 +42,51 @@ const isAuthenticated = async (req, res, next) => {
     }
 }
 
+const validateSignUpRequest = async (req, res, next) => {
+    if(!req.body.username) {
+        return res
+                .status(StatusCodes.BAD_REQUEST)
+                .json(internalServerErrorResponse({
+                    explanation: 'Name of the user is not preent'
+                }))
+    }
+    if(!req.body.email) {
+        return res
+                .status(StatusCodes.BAD_REQUEST)
+                .json(internalServerErrorResponse({
+                    explanation: 'email of the user is not preent'
+                }))
+    }
+    if(!req.body.password) {
+        return res
+                .status(StatusCodes.BAD_REQUEST)
+                .json(internalServerErrorResponse({
+                    explanation: 'password of the user is not preent'
+                }))
+    }
+    next();
+}
+
+const validateSignInRequest = async (req, res, next) => {
+    if(!req.body.email) {
+        return res
+                .status(StatusCodes.BAD_REQUEST)
+                .json(internalServerErrorResponse({
+                    explanation: 'email of the user is not preent'
+                }))
+    }
+    if(!req.body.password) {
+        return res
+                .status(StatusCodes.BAD_REQUEST)
+                .json(internalServerErrorResponse({
+                    explanation: 'password of the user is not preent'
+                }))
+    }
+    next();
+}
+
 module.exports = {
-    isAuthenticated
+    isAuthenticated,
+    validateSignInRequest,
+    validateSignUpRequest
 }

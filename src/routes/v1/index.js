@@ -1,6 +1,6 @@
 const express = require('express');
 
-const { UserController, AuthorController } = require('../../controllers');
+const { UserController, AuthorController, GenreController } = require('../../controllers');
 const { AuthMiddlewares, AuthorMiddleware } = require('../../middlewares');
 
 const router = express.Router();
@@ -10,6 +10,9 @@ router.post('/signin', AuthMiddlewares.validateSignInRequest,UserController.sign
 
 router.post('/authors',AuthorMiddleware.validateCreateRequest, AuthorController.create);
 router.get('/authors', AuthorController.getAll);
+
+router.post('/genres', GenreController.create);
+
 
 router.get('/home', AuthMiddlewares.isAuthenticated, (req, res) => {
     return res.json({nsg: 'ok'})

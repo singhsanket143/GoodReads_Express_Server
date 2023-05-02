@@ -4,11 +4,11 @@ class ValidationError extends Error {
     constructor(error) {
         super(error);
         let explanation = [];
-        error.errors.forEach(err => {
-            explanation.push(err.message);
+        Object.keys(error.error).forEach(err => {
+            explanation.push(error.error[err]);
         });
         this.name = 'ValidationError';
-        this.message = 'No =t able to validate the data sent in the request',
+        this.message = 'Not able to validate the data sent in the request',
         this.explanation = explanation;
         this.statusCode = StatusCodes.BAD_REQUEST
     }

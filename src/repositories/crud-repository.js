@@ -4,7 +4,7 @@ class CrudRepository {
         this.model = model;
     }
 
-    async create(data) {
+    create = async (data) => {
         try {
             const result = await this.model.create(data);
             return result;
@@ -14,7 +14,7 @@ class CrudRepository {
         }
     }
 
-    async destroy(id) {
+    destroy = async (id) => {
         try {
             const result = await this.model.findByIdAndDelete(id);
             return result;
@@ -24,7 +24,7 @@ class CrudRepository {
         }
     }
 
-    async get(id) {
+    get = async (id) => {
         try {
             const result = await this.model.findById(id);
             return result;
@@ -34,7 +34,7 @@ class CrudRepository {
         }
     }
 
-    async getAll() {
+    getAll = async () => {
         try {
             const result = await this.model.find({});
             return result;
@@ -44,7 +44,7 @@ class CrudRepository {
         }
     }
 
-    async create(id, data) {
+    update = async (id, data) => {
         try {
             const result = await this.model.findByIdAndUpdate(id, data, {new: true});
             return result;

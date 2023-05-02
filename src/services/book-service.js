@@ -1,15 +1,19 @@
-const { BookRepository } = require('../repositories');
+const { BookRepository, AuthorRepository } = require('../repositories');
 const { Logger } = require('../config');
 const { ValidationError, ClientError } = require('../utils/errors');
 
 class BookService {
     constructor() {
         this.bookRepository = new BookRepository();
+        this.authorRepository = new AuthorRepository();
     }
 
     create = async (data) => {
         try {
             const book = await this.bookRepository.create(data);
+            const author = await this.authorRepository.get(data.author);
+            author.books.push(book.id);
+            await author.save();
             return book;
         } catch(error) {
             Logger.error('Something went wrong in book service : create');

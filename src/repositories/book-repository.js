@@ -7,6 +7,15 @@ class BookRepository extends CrudRepository {
         super(Book);
     }
 
+    get = async (id) => {
+        try {
+            const result = await this.model.findById(id).populate('author').lean();
+            return result;
+        } catch(error) {
+            throw error;
+        }
+    }
+
     getBookRatingByUser = async (bookId, userId) => {
         try {
             const rating = await UserBookRating.findOne({

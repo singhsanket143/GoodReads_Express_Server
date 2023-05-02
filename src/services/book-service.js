@@ -28,7 +28,17 @@ class BookService {
             const books = await this.bookRepository.getAll();
             return books;
         } catch(error) {
-            Logger.error('Something went wrong in books service : create');
+            Logger.error('Something went wrong in books service : getall');
+            throw error; 
+        }
+    }
+
+    get = async (id) => {
+        try {
+            const book = await this.bookRepository.get(id);
+            return book;
+        } catch(error) {
+            Logger.error('Something went wrong in books service : get');
             throw error; 
         }
     }

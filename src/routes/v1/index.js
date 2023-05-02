@@ -1,7 +1,7 @@
 const express = require('express');
 
 const { UserController, AuthorController, GenreController, BookController } = require('../../controllers');
-const { AuthMiddlewares, AuthorMiddleware } = require('../../middlewares');
+const { AuthMiddlewares, AuthorMiddleware, BookMiddleware } = require('../../middlewares');
 
 const router = express.Router();
 
@@ -15,6 +15,7 @@ router.post('/genres', GenreController.create);
 
 router.post('/books', BookController.create);
 router.get('/books', BookController.getAll);
+router.get('/books/:id', BookMiddleware.validateGetRequest, BookController.get);
 
 
 router.get('/home', AuthMiddlewares.isAuthenticated, (req, res) => {

@@ -1,5 +1,5 @@
 const { BookShelfRepository } = require('../repositories/index');
-const logger = require('../config/logger');
+// const logger = require('../config/logger-config');
 const ValidationError = require('../utils/errors/validation-error');
 const { ClientError } = require('../utils/errors');
 
@@ -13,7 +13,7 @@ class BookShelfService {
             const shelf = await this.bookShelfRepository.create(data);
             return shelf;
         } catch(error) {
-            logger.error("Something went wrong in Book Shelf Service : Create", error);
+            // logger.error("Something went wrong in Book Shelf Service : Create", error);
             if(error.name == 'ValidationError') {
                 throw new ValidationError({
                     errors: error.errors,
@@ -29,7 +29,7 @@ class BookShelfService {
             const shelves = await this.bookShelfRepository.getAllShelvesForAUser(userId);
             return shelves;
         } catch(error) {
-            logger.error("Something went wrong in Book Shelf Service : getAllShelvesForAUser", error);
+            // logger.error("Something went wrong in Book Shelf Service : getAllShelvesForAUser", error);
             throw error;
         }
     }
@@ -53,7 +53,7 @@ class BookShelfService {
             }
             return shelf;
         } catch(error) {
-            logger.error("Something went wrong in Book Shelf Service : addBookToShelf", error);
+            // logger.error("Something went wrong in Book Shelf Service : addBookToShelf", error);
             throw error;
         }
     }
@@ -63,7 +63,7 @@ class BookShelfService {
             const books = await this.bookShelfRepository.getUserShelf(userId, shelfName);
             return books;
         } catch(error) {
-            logger.error("Something went wrong in Book Shelf Service : getAllShelvesForAUser", error);
+            // logger.error("Something went wrong in Book Shelf Service : getAllShelvesForAUser", error);
             throw error;
         }
     }

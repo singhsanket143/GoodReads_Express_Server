@@ -9,7 +9,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use('/api', apiRoutes);
 
-app.get('/', (res, res) => {
+app.get('/', (req, res) => {
     return res.json({ message: 'I am alive'})
 })
 

@@ -7,8 +7,11 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
-
 app.use('/api', apiRoutes);
+
+app.get('/', (res, res) => {
+    return res.json({ message: 'I am alive'})
+})
 
 const setupAndStartServer = () => {
     app.listen(ServerConfig.PORT, async () => {
